@@ -13,12 +13,12 @@ protocol DataControllerDelegate {
     func dataSourseChanged(dataSourse: [Roof]?, error: Error?)
 }
 
-enum RoofType {
-    case odnoskat
-    case dviskat
-    case mansarda
-    case valmova
-    case shatrovaya
+enum RoofType: Int {
+    case odnoskat = 1
+    case dviskat = 2
+    case mansarda = 3
+    case valmova = 4
+    case shatrovaya = 5
 }
 
 enum SegueIDs: String {

@@ -20,7 +20,7 @@ class CalculateScreenTableViewController: UITableViewController {
     let cellIdentifier = "CalculateDataTableViewCell"
     let dataController = DataController()
     
-    var roofImageToDisplay: UIImage!
+    var roofImageToDisplay: UIImage?
     var currentRoofForm: Int!
     var currentRoofType: RoofType!
     var calculateDataTableViewCell: CalculateDataTableViewCell!
@@ -31,11 +31,9 @@ class CalculateScreenTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let tempImage = roofImageToDisplay {
-            roofImageView.image = tempImage
-        } else {
-            roofImageView.image = UIImage()
-        }
+        roofImageView.image = roofImageToDisplay ?? UIImage(named: "odnoskat")
+        
+        self.currentRoofType = RoofType(rawValue: currentRoofForm)
     }
     
     
@@ -62,25 +60,7 @@ class CalculateScreenTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        switch currentRoofForm {
-        case 0:
-            self.currentRoofType = .odnoskat
-            break
-        case 1:
-            self.currentRoofType = .dviskat
-            break
-        case 2:
-            self.currentRoofType = .mansarda
-            break
-        case 3:
-            self.currentRoofType = .valmova
-            break
-        default:
-            self.currentRoofType = .shatrovaya
-            break
-        }
-        
-        var number = dataCurrentRoof[currentRoofForm].textData.count
+        var number = currentRoofType.rawValue
         number = 1 + number + 1
         
         return number
@@ -100,7 +80,7 @@ class CalculateScreenTableViewController: UITableViewController {
             cell.contentView.backgroundColor = UIColor.green
             
             return cell
-        case 1...dataCurrentRoof[currentRoofForm].textData.count:
+        case 1...currentRoofType.rawValue:
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CalculateDataTableViewCell
             
             let dataLabel = dataCurrentRoof[currentRoofForm].textData[indexPath.row - 1]
@@ -113,7 +93,7 @@ class CalculateScreenTableViewController: UITableViewController {
             cell.dataTextField.delegate = self
             
             return cell
-        case dataCurrentRoof[currentRoofForm].textData.count + 1:
+        case currentRoofType.rawValue + 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CalculateDataTableViewCell
             
             cell.dataLabel.isHidden = true
@@ -138,6 +118,7 @@ class CalculateScreenTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
         return UIView()
     }
     
@@ -230,24 +211,8 @@ extension CalculateScreenTableViewController: UITextFieldDelegate {
     //Запись значения в переменку по тэгу
     private func setTextFieldToValue(textField: UITextField, type: RoofType) {
         
-        switch type {
-        case .odnoskat:
-            dataController.dataArray.append(textField.numbericValue())
-            break
-        case .dviskat:
-            dataController.dataArray.append(textField.numbericValue())
-            break
-        case .mansarda:
-            dataController.dataArray.append(textField.numbericValue())
-            break
-        case .valmova:
-            dataController.dataArray.append(textField.numbericValue())
-            break
-            
-        default:
-            dataController.dataArray.append(textField.numbericValue())
-            break
-        }
+        dataController.dataArray.append(textField.numbericValue())
+        
         
     }
     

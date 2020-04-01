@@ -56,7 +56,7 @@ class TypeRoofScreenTableViewController: UITableViewController {
         }
         
         roofToSelect = dataCurrentRoof[roofIndex].imageData
-        currentForm = roofIndex
+        currentForm = roofIndex + 1
         
         performSegue(withIdentifier: SegueIDs.CalculateScreenSegue.rawValue, sender: self)
         
@@ -70,8 +70,6 @@ class TypeRoofScreenTableViewController: UITableViewController {
         if segue.identifier == SegueIDs.CalculateScreenSegue.rawValue, let calculateScreenVC = segue.destination as? CalculateScreenTableViewController {
             calculateScreenVC.roofImageToDisplay = roofToSelect
             calculateScreenVC.currentRoofForm = currentForm
-            roofToSelect = nil
-            currentForm = nil
         }
     }
     
